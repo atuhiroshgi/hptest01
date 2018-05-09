@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function calc(){
+            var u = Number(document.getElementById("Upper base").value);
+            var b = Number(document.getElementById("Bottom").value);
+            var h = Number(document.getElementById("height").value);
+            var r = ((u+b)*h)/2;//（上底＋下底）＊高さ÷２
+            document.getElementById("result").textContent="その四角形の面積は"+ r +"です";
+            }
+        </script>
+    </head>
+    <body>
+        <h1>台形の面積</h1>
+        上底（cm）:<input id="Upper base" /><br />
+        下底（cm）:<input id="Bottom" /><br />
+        高さ（cm）:<input id="height" /><br />
+        計算:<button onclick="calc()">計算</button>
+        <p id="result"></p>
+    </body>
+    </html>
