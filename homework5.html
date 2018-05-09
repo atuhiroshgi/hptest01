@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function circle(){
+            var a = Number(document.getElementById("a").value);
+            var r = (a/2)*(a/2)*3.14159265358979323846264338;
+            var x = a*3.14159265358979323846264338;
+            document.getElementById("result").textContent="面積は" + r;
+            document.getElementById("b").textContent="円周は" + x;
+
+            }
+        </script>
+    </head>
+    <body>
+        <p>円の直径：<input id="a" /></p>
+        <p><button onclick="circle()">計算</button></p>
+        <p id=b></p>
+        <p id=result></p>
+    </body>
+</html>
