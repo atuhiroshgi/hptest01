@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>インベーダー</title>
+    <script type = "text/javascript">
+        "use strict";
+        var ctx, bom, img, timer, left, right, canvas, sno = 0;
+        //bomの初期値
+        function Bom(){
+            this.x = 0, this.y = 0, this.ox = 0, this.oy = 64, this.size = 48;
+        }
+        var bitmap = {
+            draw: function (ctx){
+                this.img = document.getElementById("bom");
+                ctx.drawImage(this.img, this.ox, this.oy, this.size, this.size, this.x, this.y, this.size, this.size);
+            }
+        }
+        Bom.prototype = bitmap
+        function init(){
+            canvas = document.getElementById('canvas');
+            ctx = canvas.getContext('2d');
+            bom = new Bom();
+            setInterval(loop, 50);
+            window.addEventListener("keydown",keydown);
+            left = document.getElementById('left');
+            right = document.getElementById('right');
+            canvas.addEventListener("touchstart", function (event){
+                var rect = event.target.getBoundingClientRect();
+                var mx = event.touches[0].clientX - rect.left;
+                var my = event.touches[0].clientY - rect.top;
+                if((506 <= mx) && (mx <= 570) && (500 <= my) && (my <= 564)){
+                    right.down = true;
+                }
+            })
+            canvas.addEventListener("touchend", function (event){
+                right.down = false;
+            })
+            canvas.addEventListener("touchmove", function (event){
+                var rect = event.target.getBoundingClientRect();
+                var mx = event.touches[0].clientX - rect.left;
+                var my = event.touches[0].clientY - rect.top;
+                bom.x = mx - 32;
+                bom.y = my - 32;
+                }, false)
+        }
+        function loop(){
+            ctx.fillStyle = 'rgb(0,0,0)';
+            ctx.fillRect(0, 0, 600, 600);
+            ctx.drawImage(left, 0, 0, 64, 64, 30, 500, 64, 64);
+            ctx.drawImage(right, 0, 0, 64, 64, 506, 500, 64, 64);
+            if(sno <= 4){
+                sno += 1;
+                bom.ox += 48;
+            } else {
+                sno = 0;
+                bom.ox = 0;
+            }
+            if(right.down){
+                bom.x += 5;
+            } else {
+                bom.x = bom.x;
+            }
+            bom.draw(ctx); 
+        }
+        
+        function keydown(e){
+                if(e.keyCode == 37){
+                    bom.x -= 10;
+                }else if (e.keyCode ==39){
+                    bom.x += 10;
+                }else if(e.keyCode== 38){
+                    bom.y -= 10;
+                }else if(e.keyCode ==40){
+                    bom.y += 10;
+                }
+            }        
+    </script>
+</head>
+<body onload = "init()">
+    <canvas id = "canvas" width = "600" height = "600"></canvas> 
+    <img id = "bom" src = "./img/shoot.png" style = "display:none;" />  
+    <img id = "right" src = "./img/migi.png" style = "display:none;" />
+    <img id = "left" src = "./img/hidari.png" style = "display:none;" />
+</body>
+</html>
