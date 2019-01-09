@@ -5,9 +5,24 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>インベーダー</title>
+    <style>
+        #container{
+            position: relative;
+            height: 0;
+            overflow: hidden;
+            padding-top: 56.25%;
+        }
+        #canvas{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
     <script type = "text/javascript">
         "use strict";
-        var ctx, bom, img, timer, left, right, canvas, sno = 0;
+        var ctx, bom, img, timer, left, right, canvas, sno = 0, container;
         //bomの初期値
         function Bom(){
             this.x = 0, this.y = 0, this.ox = 0, this.oy = 64, this.size = 48;
@@ -21,7 +36,10 @@
         Bom.prototype = bitmap
         function init(){
             canvas = document.getElementById('canvas');
+            container = document.getElementById('container');
             ctx = canvas.getContext('2d');
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
             bom = new Bom();
             setInterval(loop, 50);
             window.addEventListener("keydown",keydown);
@@ -31,7 +49,7 @@
                 var rect = event.target.getBoundingClientRect();
                 var mx = event.touches[0].clientX - rect.left;
                 var my = event.touches[0].clientY - rect.top;
-                if((506 <= mx) && (mx <= 570) && (500 <= my) && (my <= 564)){
+                if((canvas.width - 100 <= mx) && (mx <= canvas.width - 36) && (canvas.height - 100 <= my) && (my <= canvas.height + 64)){
                     right.down = true;
                 }
             })
@@ -48,9 +66,9 @@
         }
         function loop(){
             ctx.fillStyle = 'rgb(0,0,0)';
-            ctx.fillRect(0, 0, 600, 600);
-            ctx.drawImage(left, 0, 0, 64, 64, 30, 500, 64, 64);
-            ctx.drawImage(right, 0, 0, 64, 64, 506, 500, 64, 64);
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(left, 0, 0, 64, 64, 30, canvas.height - 100, 64, 64);
+            ctx.drawImage(right, 0, 0, 64, 64, canvas.width - 100, canvas.height - 100, 64, 64);
             if(sno <= 4){
                 sno += 1;
                 bom.ox += 48;
@@ -80,9 +98,11 @@
     </script>
 </head>
 <body onload = "init()">
-    <canvas id = "canvas" width = "600" height = "600"></canvas> 
-    <img id = "bom" src = "./img/shoot.png" style = "display:none;" />  
-    <img id = "right" src = "./img/migi.png" style = "display:none;" />
-    <img id = "left" src = "./img/hidari.png" style = "display:none;" />
+    <div id = "container">
+        <canvas id = "canvas" width = "600" height = "600"></canvas> 
+        <img id = "bom" src = "./img/shoot.png" style = "display:none;" />  
+        <img id = "right" src = "./img/migi.png" style = "display:none;" />
+        <img id = "left" src = "./img/hidari.png" style = "display:none;" />
+    </div>    
 </body>
 </html>
